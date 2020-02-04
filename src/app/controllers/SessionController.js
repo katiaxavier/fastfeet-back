@@ -17,14 +17,15 @@ class SessionController {
     const { id, nome } = user;
 
     return res.json({
-      id,
-      nome,
-      email,
-    },
-    token: jwt.sign({id}, '475ce025ab77af421f4a594a3b87335f'),{
-      expiresIn: '7d'
-    }
-    );
+      user: {
+        id,
+        nome,
+        email,
+      },
+      token: jwt.sign({ id }, '475ce025ab77af421f4a594a3b87335f', {
+        expiresIn: '7d',
+      }),
+    });
   }
 }
 
