@@ -20,7 +20,6 @@ class RecipientController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    console.log(req.body);
     const {
       id,
       name,
