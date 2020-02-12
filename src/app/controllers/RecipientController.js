@@ -45,16 +45,15 @@ class RecipientController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      street: Yup.string().required(),
+      name: Yup.string(),
+      street: Yup.string(),
       number: Yup.number()
         .integer()
-        .positive()
-        .required(),
+        .positive(),
       complement: Yup.string(),
-      state: Yup.string().required(),
-      city: Yup.string().required(),
-      zip_code: Yup.string().required(),
+      state: Yup.string(),
+      city: Yup.string(),
+      zip_code: Yup.string(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -69,26 +68,9 @@ class RecipientController {
       return res.status(401).json({ error: 'Recipient does not exist' });
     }
 
-    const {
-      name,
-      street,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    } = await recipient.update(req.body);
+    const rec = await recipient.update(req.body);
 
-    return res.status(200).json({
-      id,
-      name,
-      street,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    });
+    return res.status(200).json(rec);
   }
 }
 
