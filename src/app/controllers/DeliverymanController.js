@@ -14,12 +14,12 @@ class DeliverymanController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const userExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { email: req.body.email },
     });
 
-    if (userExists) {
-      return res.status(400).json({ error: 'User already exists.' });
+    if (deliverymanExists) {
+      return res.status(400).json({ error: 'Deliveryman already exists.' });
     }
 
     const { id, name, email } = await Deliveryman.create(req.body);
@@ -33,36 +33,26 @@ class DeliverymanController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
-        .email()
-        .required(),
+      name: Yup.string(),
+      email: Yup.string().email(),
+      avatar_id: Yup.number().integer(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { email } = req.body;
+    const { id } = req.params;
 
-    const deliveryman = await Deliveryman.findByPk(req.userId);
+    const deliveryman = await Deliveryman.findByPk(id);
 
-    if (email !== deliveryman.email) {
-      const deliverymanExists = await Deliveryman.findOne({
-        where: { email },
-      });
-
-      if (deliverymanExists) {
-        return res.status(400).json({ error: 'User already exists.' });
-      }
-    }
-
-    const { id, name } = await deliveryman.update(req.body);
+    const { name, email, avatar_id } = await deliveryman.update(req.body);
 
     return res.json({
       id,
       name,
       email,
+      avatar_id,
     });
   }
 }
