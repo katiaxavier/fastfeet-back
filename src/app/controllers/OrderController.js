@@ -3,7 +3,9 @@ import * as Yup from 'yup';
 import Order from '../models/Order';
 import Deliveryman from '../models/Deliveryman';
 import Recipients from '../models/Recipient';
-import Mail from '../../lib/Mail';
+
+import RegisterMail from '../jobs/RegisterMail';
+import Queue from '../../lib/Queue';
 
 class OrderController {
   async store(req, res) {
@@ -24,7 +26,7 @@ class OrderController {
       deliveryman_id,
       product
     });
-  
+
     const result = await Order.findOne({
       where: {
         recipient_id
@@ -43,16 +45,10 @@ class OrderController {
       ]
     });
 
-    await Mail.sendMail({
-      to: `${result.deliveryman.name} <${result.deliveryman.email}>`,
-      subject: 'Nova encomenda',
-      template: 'register',
-      context: {
-        deliveryman: result.deliveryman.name,
-        product: product,
-        user: result.recipient.name
-      }
-    })
+    await Queue.add(RegisterMail.key, {
+      result,
+    });
+
     return res.json(order);
   }
 }
