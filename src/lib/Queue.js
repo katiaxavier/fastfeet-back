@@ -10,6 +10,7 @@ class Queue {
 
     this.init();
   }
+
   init() {
     jobs.forEach(({ key, handle }) => {
       this.queues[key] = {

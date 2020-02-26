@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import Order from '../models/Delivery';
+import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipients from '../models/Recipient';
 
@@ -13,7 +13,7 @@ class OrderController {
   }
 
   async store(req, res) {
-    const { product, deliveryman_id, recipient_id, signature_id } = req.body;
+    const { product, deliveryman_id, recipient_id } = req.body;
 
     const schema = Yup.object().shape({
       recipient_id: Yup.number().required(),
@@ -25,14 +25,13 @@ class OrderController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const order = await Order.create({
+    const delivery = await Delivery.create({
       recipient_id,
       deliveryman_id,
       product,
-      signature_id,
     });
 
-    const result = await Order.findOne({
+    const result = await Delivery.findOne({
       where: {
         recipient_id,
       },
@@ -54,7 +53,7 @@ class OrderController {
       result,
     });
 
-    return res.json(order);
+    return res.json(delivery);
   }
 }
 
