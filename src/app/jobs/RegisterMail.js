@@ -4,7 +4,7 @@ class RegisterMail {
   get key() {
     return 'RegisterMail';
   }
-  
+
   async handle({ data }) {
     const { deliveryman } = data.result;
     const { recipient } = data.result;
@@ -16,7 +16,7 @@ class RegisterMail {
       context: {
         deliveryman: deliveryman.name,
         product: data.result.product,
-        user: recipient.name
+        user: recipient.name,
       },
     });
   }
