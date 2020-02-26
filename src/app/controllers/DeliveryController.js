@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import Order from '../models/Order';
+import Order from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipients from '../models/Recipient';
 
@@ -8,6 +8,10 @@ import RegisterMail from '../jobs/RegisterMail';
 import Queue from '../../lib/Queue';
 
 class OrderController {
+  async index(req, res) {
+    return res.json();
+  }
+
   async store(req, res) {
     const { product, deliveryman_id, recipient_id, signature_id } = req.body;
 
@@ -24,12 +28,13 @@ class OrderController {
     const order = await Order.create({
       recipient_id,
       deliveryman_id,
-      product
+      product,
+      signature_id,
     });
 
     const result = await Order.findOne({
       where: {
-        recipient_id
+        recipient_id,
       },
       include: [
         {
@@ -40,9 +45,9 @@ class OrderController {
         {
           model: Recipients,
           as: 'recipient',
-          attributes: ['id', 'name']
-        }
-      ]
+          attributes: ['id', 'name'],
+        },
+      ],
     });
 
     await Queue.add(RegisterMail.key, {

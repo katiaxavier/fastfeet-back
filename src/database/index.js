@@ -4,7 +4,7 @@ import User from '../app/models/User';
 import File from '../app/models/File';
 import Recipient from '../app/models/Recipient';
 import Deliveryman from '../app/models/Deliveryman';
-import Order from '../app/models/Order';
+import Order from '../app/models/Delivery';
 
 import databaseConfig from '../config/database';
 
