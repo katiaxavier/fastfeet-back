@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { Op } from 'sequelize';
-import { getHours, startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import Deliverys from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 
@@ -25,9 +25,9 @@ class StartDeliveryController {
       return res.status(401).json({ error: 'Deliveryman does not exists.' });
     }
 
-    const start_date = new Date();
+    const start_date = new Date().getHours();
 
-    if (getHours(start_date) < 8 || getHours(start_date) > 18) {
+    if (start_date < 8 || start_date > 18) {
       return res.status(400).json({
         error: 'Deliveries can be made from 08h to 18h',
       });
