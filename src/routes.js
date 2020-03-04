@@ -27,8 +27,11 @@ routes.post('/deliveryman', DeliverymanController.store);
 routes.put('/deliveryman/:id', DeliverymanController.update);
 routes.get('/deliveryman', DeliverymanController.index);
 routes.delete('/deliveryman/:id', DeliverymanController.delete);
+routes.get('/deliveryman/:id', DeliveryController.index);
+routes.get('/deliveryman/:id/deliveries', DeliveryController.show);
 
 routes.post('/deliveries', DeliveryController.store);
 
 routes.put('/start', StartDeliveryController.update);
+
 export default routes;
