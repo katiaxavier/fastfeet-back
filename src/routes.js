@@ -8,6 +8,7 @@ import FileController from './app/controllers/FileController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliveryController from './app/controllers/DeliveryController';
 import StartDeliveryController from './app/controllers/StartDeliveryController';
+import DeliveryProblemsController from './app/controllers/DeliveryProblemsController';
 
 import authMiddleware from './app/middlewares/auth';
 import EndDeliveryController from './app/controllers/EndDeliveryController';
@@ -40,6 +41,14 @@ routes.put(
   '/endDelivery/:id/:deliveryman_id',
   upload.single('file'),
   EndDeliveryController.update
+);
+
+routes.post('/delivery/:id/problems', DeliveryProblemsController.store);
+routes.get('/delivery/problems', DeliveryProblemsController.show);
+routes.get('/delivery/:id/problems', DeliveryProblemsController.index);
+routes.delete(
+  '/problem/:id/cancel-delivery',
+  DeliveryProblemsController.delete
 );
 
 export default routes;
